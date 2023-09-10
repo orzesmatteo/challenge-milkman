@@ -60,6 +60,16 @@
             <artifactId>challenge-dao</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>it.milkman</groupId>
+            <artifactId>challenge-dto</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>it.milkman</groupId>
+            <artifactId>challenge-mapper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

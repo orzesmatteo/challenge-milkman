@@ -11,6 +11,8 @@
 
     <modules>
         <module>challenge-dao</module>
+        <module>challenge-dto</module>
+        <module>challenge-mapper</module>
         <module>challenge-server</module>
     </modules>
 
