@@ -1,12 +1,13 @@
 package it.milkman.challenge.dao;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Table;
+import it.milkman.challenge.common.Constants;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -16,6 +17,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 public class Order extends BaseEntity {
 
+    @Column(length = Constants.StringSizingConstants.XLARGE)
     private String notes;
+
+    @OneToMany(targetEntity = Package.class, mappedBy = "order")
+    private Set<Package> packages;
 
 }

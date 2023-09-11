@@ -1,10 +1,8 @@
 package it.milkman.challenge.server.controller;
 
-import it.milkman.challenge.dto.OrderDto;
+import it.milkman.challenge.dto.order.OrderDto;
 import it.milkman.challenge.server.service.OrderService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -21,6 +19,16 @@ public class OrderController {
     @GetMapping
     public Set<OrderDto> getAll() {
         return orderService.getAll();
+    }
+
+    @PostMapping
+    public void acceptOrder(OrderDto orderDto) {
+        orderService.acceptOrder(orderDto);
+    }
+
+    @PutMapping
+    public void editOrder(OrderDto orderDto) {
+        orderService.acceptOrder(orderDto);
     }
 
 }

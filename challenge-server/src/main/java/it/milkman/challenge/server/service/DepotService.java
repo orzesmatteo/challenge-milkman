@@ -1,6 +1,6 @@
 package it.milkman.challenge.server.service;
 
-import it.milkman.challenge.dto.DepotDto;
+import it.milkman.challenge.dto.depot.DepotDto;
 import it.milkman.challenge.mapper.DepotMapper;
 import it.milkman.challenge.repository.DepotRepository;
 import org.springframework.stereotype.Service;

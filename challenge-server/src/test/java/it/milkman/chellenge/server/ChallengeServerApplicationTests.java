@@ -9,7 +9,7 @@ class ChallengeServerApplicationTests {
 
     @Test
     void contextLoads() {
-        assert(true);
+        assert (true);
     }
 
 }

@@ -1,5 +1,6 @@
 package it.milkman.challenge.dao;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -21,9 +22,11 @@ public abstract class BaseEntity {
     private UUID id;
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private Instant creation;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private Instant lastUpdate;
 
 }

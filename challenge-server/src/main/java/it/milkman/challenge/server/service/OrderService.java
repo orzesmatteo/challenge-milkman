@@ -1,6 +1,6 @@
 package it.milkman.challenge.server.service;
 
-import it.milkman.challenge.dto.OrderDto;
+import it.milkman.challenge.dto.order.OrderDto;
 import it.milkman.challenge.mapper.OrderMapper;
 import it.milkman.challenge.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -22,5 +22,9 @@ public class OrderService {
 
     public Set<OrderDto> getAll() {
         return orderRepository.findAll().stream().map(orderMapper::daoToDto).collect(Collectors.toSet());
+    }
+
+    public void acceptOrder(OrderDto orderDto) {
+
     }
 }

@@ -1,8 +1,9 @@
 package it.milkman.challenge.server.controller;
 
-import it.milkman.challenge.dto.DepotDto;
+import it.milkman.challenge.dto.depot.DepotDto;
 import it.milkman.challenge.server.service.DepotService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,11 @@ public class DepotController {
 
     @GetMapping
     public Set<DepotDto> getAll() {
+        return depotService.getAll();
+    }
+
+    @PostMapping("_start-plan")
+    public Set<DepotDto> planStart() {
         return depotService.getAll();
     }
 

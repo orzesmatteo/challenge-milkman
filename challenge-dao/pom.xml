@@ -42,5 +42,10 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>it.milkman</groupId>
+            <artifactId>challenge-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

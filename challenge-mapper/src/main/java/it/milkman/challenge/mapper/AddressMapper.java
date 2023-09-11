@@ -1,7 +1,7 @@
 package it.milkman.challenge.mapper;
 
-import it.milkman.challenge.dao.Order;
-import it.milkman.challenge.dto.order.OrderDto;
+import it.milkman.challenge.dao.embeddables.Address;
+import it.milkman.challenge.dto.AddressDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
@@ -10,10 +10,10 @@ import org.mapstruct.ReportingPolicy;
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
-public interface OrderMapper {
+public interface AddressMapper {
 
-    OrderDto daoToDto(Order order);
+    AddressDto daoToDto(Address address);
 
-    Order dtoToDao(OrderDto orderDto);
+    Address dtoToDao(AddressDto addressDto);
 
 }
