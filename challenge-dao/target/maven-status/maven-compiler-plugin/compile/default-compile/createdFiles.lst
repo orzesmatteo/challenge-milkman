@@ -1,0 +1,9 @@
+it\milkman\challenge\repository\OrderRepository.class
+it\milkman\challenge\dao\embeddables\Coordinates.class
+it\milkman\challenge\dao\Order.class
+it\milkman\challenge\dao\embeddables\Address.class
+it\milkman\challenge\repository\DepotRepository.class
+it\milkman\challenge\dao\BaseEntity.class
+it\milkman\challenge\repository\PackageRepository.class
+it\milkman\challenge\dao\Depot.class
+it\milkman\challenge\dao\Package.class

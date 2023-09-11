@@ -1,0 +1,5 @@
+it\milkman\challenge\server\ChallengeApplication.class
+it\milkman\challenge\server\controller\OrderController.class
+it\milkman\challenge\server\service\OrderService.class
+it\milkman\challenge\server\controller\DepotController.class
+it\milkman\challenge\server\service\DepotService.class
