@@ -1,11 +1,17 @@
 package it.milkman.challenge.server.service;
 
+import it.milkman.challenge.dto.depot.DepotDto;
+import it.milkman.challenge.dto.order.CreateOrderDto;
+import it.milkman.challenge.dto.order.EditOrderDto;
 import it.milkman.challenge.dto.order.OrderDto;
 import it.milkman.challenge.mapper.OrderMapper;
 import it.milkman.challenge.repository.OrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +30,19 @@ public class OrderService {
         return orderRepository.findAll().stream().map(orderMapper::daoToDto).collect(Collectors.toSet());
     }
 
-    public void acceptOrder(OrderDto orderDto) {
+    public UUID acceptOrder(CreateOrderDto orderDto) {
+        return null; //TODO
+    }
 
+    public OrderDto editOrder(UUID orderId, EditOrderDto orderDto) {
+        return null;//TODO
+    }
+
+    public Page<OrderDto> searchOrders(String orderStatus, UUID depotId, Pageable pageable) {
+        return null;//TODO
+    }
+
+    public Set<DepotDto> startPlanningOrders(UUID depotId) {
+        return null;
     }
 }

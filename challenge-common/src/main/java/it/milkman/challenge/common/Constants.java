@@ -13,6 +13,7 @@ public final class Constants {
         public final static int XLARGE = 64;
         public final static int XXLARGE = 128;
         public final static int XXXLARGE = 256;
+
         private StringSizingConstants() {
         }
     }

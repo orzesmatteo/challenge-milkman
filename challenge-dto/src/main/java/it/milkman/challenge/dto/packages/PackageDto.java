@@ -16,9 +16,12 @@ public record PackageDto(
         @NotNull
         Instant lastUpdate,
         @NotNull
-        AddressDto addressDto,
+        AddressDto address,
         @NotNull
-        CoordinatesDto coordinatesDto,
-        String notesForDelivery
+        CoordinatesDto coordinates,
+        String notesForDelivery,
+        @NotNull
+        PackageStatusDto status,
+        Instant deliveryDate
 ) implements Serializable {
 }

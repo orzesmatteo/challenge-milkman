@@ -1,6 +1,8 @@
 package it.milkman.challenge.dto.order;
 
+import it.milkman.challenge.dto.depot.DepotDto;
 import it.milkman.challenge.dto.packages.PackageDto;
+import it.milkman.challenge.dto.supplier.SupplierDto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,8 +18,17 @@ public record OrderDto(
         Instant creation,
         @NotNull
         Instant lastUpdate,
+        @NotNull
+        SupplierDto supplier,
+        @NotNull
+        DepotDto depot,
         String notes,
         @NotEmpty
-        Set<PackageDto> packages
+        Set<PackageDto> packages,
+        @NotNull
+        OrderStatusDto status,
+        Instant planStart,
+        Instant deliveryStart,
+        Instant deliveryEnd
 ) implements Serializable {
 }

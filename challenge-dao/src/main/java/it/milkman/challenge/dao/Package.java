@@ -3,15 +3,20 @@ package it.milkman.challenge.dao;
 import it.milkman.challenge.common.Constants;
 import it.milkman.challenge.dao.embeddables.Address;
 import it.milkman.challenge.dao.embeddables.Coordinates;
+import it.milkman.challenge.dao.enums.PackageStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.Instant;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Package extends BaseEntity {
@@ -21,12 +26,18 @@ public class Package extends BaseEntity {
 
     //TODO provide a mock implementation that resolve coordinates based on address
     @Embedded
-    private Coordinates resolvedCoordinates;
+    private Coordinates coordinates;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
 
     @Column(length = Constants.StringSizingConstants.LARGE)
     private String notesForDelivery;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = Constants.StringSizingConstants.MEDIUM)
+    private PackageStatus status;
+
+    private Instant deliveryDate;
 
 }

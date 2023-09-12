@@ -1,9 +1,10 @@
 package it.milkman.challenge.dao;
 
 import it.milkman.challenge.common.Constants;
-import it.milkman.challenge.dao.embeddables.Address;
-import it.milkman.challenge.dao.embeddables.Coordinates;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,18 +19,12 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Depot extends BaseEntity {
-
-    @OneToMany(targetEntity = Order.class, mappedBy = "depot")
-    private Set<Order> orders;
+public class Supplier extends BaseEntity {
 
     @Column(unique = true, nullable = false, length = Constants.StringSizingConstants.MEDIUM)
-    private String warehouseName;
+    private String name;
 
-    @Embedded
-    private Address address;
-
-    @Embedded
-    private Coordinates coordinates;
+    @OneToMany(targetEntity = Order.class, mappedBy = "supplier")
+    private Set<Order> orders;
 
 }

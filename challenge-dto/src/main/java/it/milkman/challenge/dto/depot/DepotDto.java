@@ -22,6 +22,6 @@ public record DepotDto(
         @NotNull
         AddressDto addressDto,
         @NotNull
-        CoordinatesDto coordinatesDto //TODO inserire custom validator
+        CoordinatesDto coordinatesDto
 ) implements Serializable {
 }
