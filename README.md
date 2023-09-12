@@ -1,7 +1,21 @@
-TODOS
+# Project Structure
 
+The project is composed of different modules:
+- __challenge-common__: Common library containing some constants used by other modules
+- __challenge-da__: Library containing JPA Entities
+- __challenge-dto__: Library containing dto used as input and output for REST APIs
+- __challenge-mapper__: Mapping library used to convert dao to dto one way or another
+- __challenge-server__: Actual Spring Boot Application importing all the other libraries, exposes Rest Controllers and beans responsible of the application business logic.
+
+### TODOS
+
+- complete mapper module
+- complete business logic
+- introduce controller advice to handle exceptions
 - write unit tests and configure jacoco plugin for test report
-- add openapi annotation to controllers and dto to generate clients.
-- add security management
+
+### EXTRAS
+
+- introduce dynamic cors configuration
 - add aspect module for auditing purposes
-- add enumerated status to order entity and dto
+- add scheduled method to declare packages as lost after some time

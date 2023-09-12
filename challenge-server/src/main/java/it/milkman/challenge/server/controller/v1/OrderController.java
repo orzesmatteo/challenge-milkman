@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import it.milkman.challenge.dto.order.CreateOrderDto;
 import it.milkman.challenge.dto.order.EditOrderDto;
 import it.milkman.challenge.dto.order.OrderDto;
+import it.milkman.challenge.dto.order.OrderStatusDto;
 import it.milkman.challenge.server.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "Input depotId is not found.")
     })
     public Page<@Valid OrderDto> searchOrders(
-            @RequestParam(required = false) String orderStatus,
+            @RequestParam(required = false) OrderStatusDto orderStatus,
             @RequestParam(required = false) UUID depotId,
             @PageableDefault(size = 20) @SortDefault(sort = "creation", direction = Sort.Direction.ASC) Pageable pageable) {
         return orderService.searchOrders(orderStatus, depotId, pageable);
