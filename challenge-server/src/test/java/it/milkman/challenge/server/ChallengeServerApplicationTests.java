@@ -1,6 +1,5 @@
-package it.milkman.chellenge.server;
+package it.milkman.challenge.server;
 
-import it.milkman.challenge.server.ChallengeApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

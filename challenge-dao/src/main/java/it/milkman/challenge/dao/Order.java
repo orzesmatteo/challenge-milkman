@@ -3,10 +3,7 @@ package it.milkman.challenge.dao;
 import it.milkman.challenge.common.Constants;
 import it.milkman.challenge.dao.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
@@ -19,6 +16,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 public class Order extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

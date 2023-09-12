@@ -5,10 +5,7 @@ import it.milkman.challenge.dao.embeddables.Address;
 import it.milkman.challenge.dao.embeddables.Coordinates;
 import it.milkman.challenge.dao.enums.PackageStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
@@ -19,6 +16,8 @@ import java.time.Instant;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 public class Package extends BaseEntity {
 
     @Embedded

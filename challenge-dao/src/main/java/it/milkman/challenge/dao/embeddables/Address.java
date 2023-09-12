@@ -3,14 +3,15 @@ package it.milkman.challenge.dao.embeddables;
 import it.milkman.challenge.common.Constants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Embeddable
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 public class Address {
 
     @Column(length = Constants.StringSizingConstants.LARGE, nullable = false)
