@@ -19,9 +19,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class Depot extends BaseEntity {
 
-    @OneToMany(targetEntity = Order.class, mappedBy = "depot")
-    private Set<Order> orders;
-
     @Column(unique = true, nullable = false, length = Constants.StringSizingConstants.MEDIUM)
     private String warehouseName;
 

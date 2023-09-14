@@ -10,12 +10,14 @@ import it.milkman.challenge.mapper.DepotMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
 @SpringBootTest(classes = ChallengeApplication.class)
+@Profile("h2")
 class ChallengeServerApplicationTests {
 
     @Autowired

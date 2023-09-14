@@ -20,12 +20,14 @@ import it.milkman.challenge.server.ChallengeApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
 @SpringBootTest(classes = ChallengeApplication.class)
+@ActiveProfiles("h2")
 public class ChallengeMappersTests {
 
     @Autowired
@@ -70,7 +72,7 @@ public class ChallengeMappersTests {
     void verifyDepotMapper() {
         UUID randomUUID = UUID.randomUUID();
         Instant instant = Instant.now();
-        Depot depot = new Depot(null, "name", new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0));
+        Depot depot = new Depot("name", new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0));
         depot.setId(randomUUID);
         depot.setCreation(instant);
         depot.setLastUpdate(instant);
@@ -85,16 +87,25 @@ public class ChallengeMappersTests {
     void verifyOrderMapper() {
         UUID randomUUID = UUID.randomUUID();
         Instant instant = Instant.now();
-        Depot depot = new Depot(null, "name", new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0));
+        Depot depot = new Depot("name", new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0));
         depot.setId(randomUUID);
         depot.setCreation(instant);
         depot.setLastUpdate(instant);
+        Supplier supplier = new Supplier("name");
+        supplier.setId(randomUUID);
+        supplier.setCreation(instant);
+        supplier.setLastUpdate(instant);
+        Package packageDao = new Package(new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0), null, "notes", PackageStatus.IN_DELIVERY, instant);
+        packageDao.setId(randomUUID);
+        packageDao.setCreation(instant);
+        packageDao.setLastUpdate(instant);
         DepotDto depotDto = new DepotDto(randomUUID, instant, instant, "name", new AddressDto("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new CoordinatesDto(1.0, 2.0));
-        Order order = new Order(null, depot, "notes", null, OrderStatus.IN_DELIVERY, instant, instant, instant);
+        Order order = new Order(supplier, depot, "notes", Set.of(packageDao), OrderStatus.IN_DELIVERY, instant, instant, instant);
         order.setId(randomUUID);
         order.setCreation(instant);
         order.setLastUpdate(instant);
-        OrderDto orderDto = new OrderDto(randomUUID, instant, instant, null, depotDto, "notes", null, OrderStatusDto.IN_DELIVERY, instant, instant, instant);
+        OrderDto orderDto = new OrderDto(randomUUID, instant, instant, new SupplierDto(randomUUID, instant, instant, "name"), depotDto, "notes", Set.of(new PackageDto(randomUUID, instant, instant, new AddressDto("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new CoordinatesDto(1.0, 2.0), "notes", PackageStatusDto.IN_DELIVERY, instant)),
+                OrderStatusDto.IN_DELIVERY, instant, instant, instant);
         OrderDto generatedDto = orderMapper.daoToDto(order);
         Order generatedDao = orderMapper.dtoToDao(orderDto);
         assert (generatedDto.equals(orderDto));
@@ -117,28 +128,17 @@ public class ChallengeMappersTests {
     }
 
     @Test
-    void verifySupplierMapperDaoToDto() {
+    void verifySupplierMapper() {
         UUID randomUUID = UUID.randomUUID();
         Instant instant = Instant.now();
-        Supplier supplier = new Supplier("name", null);
+        Supplier supplier = new Supplier("name");
         supplier.setId(randomUUID);
         supplier.setCreation(instant);
         supplier.setLastUpdate(instant);
         SupplierDto supplierDto = new SupplierDto(randomUUID, instant, instant, "name");
         SupplierDto generatedDto = supplierMapper.daoToDto(supplier);
-        assert (generatedDto.equals(supplierDto));
-    }
-
-    @Test
-    void verifySupplierMapperDtoToDao() {
-        UUID randomUUID = UUID.randomUUID();
-        Instant instant = Instant.now();
-        Supplier supplier = new Supplier("name", null);
-        supplier.setId(randomUUID);
-        supplier.setCreation(instant);
-        supplier.setLastUpdate(instant);
-        SupplierDto supplierDto = new SupplierDto(randomUUID, instant, instant, "name");
         Supplier generatedDao = supplierMapper.dtoToDao(supplierDto);
+        assert (generatedDto.equals(supplierDto));
         assert (generatedDao.equals(supplier));
     }
 

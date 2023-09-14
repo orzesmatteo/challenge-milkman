@@ -1,5 +1,7 @@
 package it.milkman.challenge.dto.order;
 
+import it.milkman.challenge.dto.packages.CreatePackageDto;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
@@ -11,8 +13,8 @@ public record CreateOrderDto(
         UUID depotId,
         @NotNull
         UUID supplierId,
-        @NotNull
-        Set<UUID> packagesIds,
+        @NotEmpty
+        Set<CreatePackageDto> packages,
         String notes
 ) implements Serializable {
 }

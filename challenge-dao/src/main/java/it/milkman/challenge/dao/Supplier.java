@@ -23,7 +23,4 @@ public class Supplier extends BaseEntity {
     @Column(unique = true, nullable = false, length = Constants.StringSizingConstants.MEDIUM)
     private String name;
 
-    @OneToMany(targetEntity = Order.class, mappedBy = "supplier")
-    private Set<Order> orders;
-
 }

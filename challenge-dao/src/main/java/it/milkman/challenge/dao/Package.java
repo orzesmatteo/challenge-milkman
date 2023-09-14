@@ -23,7 +23,6 @@ public class Package extends BaseEntity {
     @Embedded
     private Address address;
 
-    //TODO provide a mock implementation that resolve coordinates based on address
     @Embedded
     private Coordinates coordinates;
 
