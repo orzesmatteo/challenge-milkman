@@ -23,10 +23,10 @@ public class Address {
     @Column(length = Constants.StringSizingConstants.SHORT, nullable = false)
     private String cap;
 
-    @Column(length = Constants.StringSizingConstants.MEDIUM, nullable = false)
+    @Column(length = Constants.StringSizingConstants.LARGE, nullable = false)
     private String city;
 
-    @Column(length = Constants.StringSizingConstants.MEDIUM, nullable = false)
+    @Column(length = Constants.StringSizingConstants.LARGE, nullable = false)
     private String province;
 
 }

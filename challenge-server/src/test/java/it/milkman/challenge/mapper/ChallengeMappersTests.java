@@ -26,6 +26,8 @@ import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
+import static it.milkman.challenge.TestHelper.*;
+
 @SpringBootTest(classes = ChallengeApplication.class)
 @ActiveProfiles("h2")
 public class ChallengeMappersTests {
@@ -50,8 +52,8 @@ public class ChallengeMappersTests {
 
     @Test
     void verifyAddressMapper() {
-        Address address = new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini");
-        AddressDto addressDto = new AddressDto("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini");
+        Address address = getAddressForTests();
+        AddressDto addressDto = getAddressDtoForTests();
         AddressDto generatedDto = addressMapper.daoToDto(address);
         Address generatedDao = addressMapper.dtoToDao(addressDto);
         assert (generatedDto.equals(addressDto));
@@ -60,8 +62,8 @@ public class ChallengeMappersTests {
 
     @Test
     void verifyCoordinatesMapper() {
-        Coordinates coordinates = new Coordinates(1.0, 2.0);
-        CoordinatesDto coordinatesDto = new CoordinatesDto(1.0, 2.0);
+        Coordinates coordinates = getCoordinatesForTests();
+        CoordinatesDto coordinatesDto = getCoordinatesDtoForTests();
         CoordinatesDto generatedDto = coordinatesMapper.daoToDto(coordinates);
         Coordinates generatedDao = coordinatesMapper.dtoToDao(coordinatesDto);
         assert (generatedDto.equals(coordinatesDto));
@@ -72,11 +74,11 @@ public class ChallengeMappersTests {
     void verifyDepotMapper() {
         UUID randomUUID = UUID.randomUUID();
         Instant instant = Instant.now();
-        Depot depot = new Depot("name", new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0));
+        Depot depot = new Depot("name", getAddressForTests(), getCoordinatesForTests());
         depot.setId(randomUUID);
         depot.setCreation(instant);
         depot.setLastUpdate(instant);
-        DepotDto depotDto = new DepotDto(randomUUID, instant, instant, "name", new AddressDto("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new CoordinatesDto(1.0, 2.0));
+        DepotDto depotDto = new DepotDto(randomUUID, instant, instant, "name", getAddressDtoForTests(), getCoordinatesDtoForTests());
         DepotDto generatedDto = depotMapper.daoToDto(depot);
         Depot generatedDao = depotMapper.dtoToDao(depotDto);
         assert (generatedDto.equals(depotDto));
@@ -87,7 +89,7 @@ public class ChallengeMappersTests {
     void verifyOrderMapper() {
         UUID randomUUID = UUID.randomUUID();
         Instant instant = Instant.now();
-        Depot depot = new Depot("name", new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0));
+        Depot depot = new Depot("name", getAddressForTests(), getCoordinatesForTests());
         depot.setId(randomUUID);
         depot.setCreation(instant);
         depot.setLastUpdate(instant);
@@ -95,16 +97,18 @@ public class ChallengeMappersTests {
         supplier.setId(randomUUID);
         supplier.setCreation(instant);
         supplier.setLastUpdate(instant);
-        Package packageDao = new Package(new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0), null, "notes", PackageStatus.IN_DELIVERY, instant);
+        Package packageDao = new Package(getAddressForTests(), getCoordinatesForTests(), null, "notes", PackageStatus.IN_DELIVERY, instant);
         packageDao.setId(randomUUID);
         packageDao.setCreation(instant);
         packageDao.setLastUpdate(instant);
-        DepotDto depotDto = new DepotDto(randomUUID, instant, instant, "name", new AddressDto("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new CoordinatesDto(1.0, 2.0));
+        DepotDto depotDto = new DepotDto(randomUUID, instant, instant, "name", getAddressDtoForTests(), getCoordinatesDtoForTests());
         Order order = new Order(supplier, depot, "notes", Set.of(packageDao), OrderStatus.IN_DELIVERY, instant, instant, instant);
         order.setId(randomUUID);
         order.setCreation(instant);
         order.setLastUpdate(instant);
-        OrderDto orderDto = new OrderDto(randomUUID, instant, instant, new SupplierDto(randomUUID, instant, instant, "name"), depotDto, "notes", Set.of(new PackageDto(randomUUID, instant, instant, new AddressDto("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new CoordinatesDto(1.0, 2.0), "notes", PackageStatusDto.IN_DELIVERY, instant)),
+        OrderDto orderDto = new OrderDto(randomUUID, instant, instant,
+                new SupplierDto(randomUUID, instant, instant, "name"), depotDto, "notes",
+                Set.of(new PackageDto(randomUUID, instant, instant, getAddressDtoForTests(), getCoordinatesDtoForTests(), "notes", PackageStatusDto.IN_DELIVERY, instant)),
                 OrderStatusDto.IN_DELIVERY, instant, instant, instant);
         OrderDto generatedDto = orderMapper.daoToDto(order);
         Order generatedDao = orderMapper.dtoToDao(orderDto);
@@ -116,11 +120,11 @@ public class ChallengeMappersTests {
     void verifyPackageMapper() {
         UUID randomUUID = UUID.randomUUID();
         Instant instant = Instant.now();
-        Package packageDao = new Package(new Address("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new Coordinates(1.0, 2.0), null, "notes", PackageStatus.IN_DELIVERY, instant);
+        Package packageDao = new Package(getAddressForTests(), getCoordinatesForTests(), null, "notes", PackageStatus.IN_DELIVERY, instant);
         packageDao.setId(randomUUID);
         packageDao.setCreation(instant);
         packageDao.setLastUpdate(instant);
-        PackageDto packageDto = new PackageDto(randomUUID, instant, instant, new AddressDto("Viale Ferri", "13", "47833", "Morciano di Romagna", "Rimini"), new CoordinatesDto(1.0, 2.0), "notes", PackageStatusDto.IN_DELIVERY, instant);
+        PackageDto packageDto = new PackageDto(randomUUID, instant, instant, getAddressDtoForTests(), getCoordinatesDtoForTests(), "notes", PackageStatusDto.IN_DELIVERY, instant);
         PackageDto generatedDto = packageMapper.daoToDto(packageDao);
         Package generatedDao = packageMapper.dtoToDao(packageDto);
         assert (generatedDto.equals(packageDto));

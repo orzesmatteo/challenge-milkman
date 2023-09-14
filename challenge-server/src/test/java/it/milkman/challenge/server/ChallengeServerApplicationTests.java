@@ -17,11 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @SpringBootTest(classes = ChallengeApplication.class)
-@Profile("h2")
 class ChallengeServerApplicationTests {
-
-    @Autowired
-    DepotMapper depotMapper;
 
     @Test
     void contextLoads() {

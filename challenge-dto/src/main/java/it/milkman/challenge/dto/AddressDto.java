@@ -17,10 +17,10 @@ public record AddressDto(
         @Size(max = Constants.StringSizingConstants.SHORT)
         String cap,
         @NotEmpty
-        @Size(max = Constants.StringSizingConstants.MEDIUM)
+        @Size(max = Constants.StringSizingConstants.LARGE)
         String city,
         @NotEmpty
-        @Size(max = Constants.StringSizingConstants.MEDIUM)
+        @Size(max = Constants.StringSizingConstants.LARGE)
         String province
 ) implements Serializable {
 }
