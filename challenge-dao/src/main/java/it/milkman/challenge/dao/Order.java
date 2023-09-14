@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class Order extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

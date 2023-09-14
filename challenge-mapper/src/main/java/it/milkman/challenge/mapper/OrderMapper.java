@@ -8,7 +8,8 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {AddressMapper.class, CoordinatesMapper.class, DepotMapper.class, PackageMapper.class, SupplierMapper.class}
 )
 public interface OrderMapper {
 

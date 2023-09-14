@@ -1,9 +1,7 @@
 package it.milkman.challenge.dao;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,21 +9,23 @@ import java.time.Instant;
 import java.util.UUID;
 
 @MappedSuperclass
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    protected UUID id;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private Instant creation;
+    protected Instant creation;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private Instant lastUpdate;
+    protected Instant lastUpdate;
 
 }

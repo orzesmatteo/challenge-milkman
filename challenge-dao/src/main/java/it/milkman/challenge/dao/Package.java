@@ -17,7 +17,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class Package extends BaseEntity {
 
     @Embedded

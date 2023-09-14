@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class Depot extends BaseEntity {
 
     @OneToMany(targetEntity = Order.class, mappedBy = "depot")

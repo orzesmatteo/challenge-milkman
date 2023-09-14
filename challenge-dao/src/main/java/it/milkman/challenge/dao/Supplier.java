@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class Supplier extends BaseEntity {
 
     @Column(unique = true, nullable = false, length = Constants.StringSizingConstants.MEDIUM)

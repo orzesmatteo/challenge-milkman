@@ -7,15 +7,21 @@ import it.milkman.challenge.dto.depot.DepotDto;
 import java.time.Instant;
 import java.util.UUID;
 import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-11T22:45:31+0200",
+    date = "2023-09-14T21:20:41+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
 public class DepotMapperImpl implements DepotMapper {
+
+    @Autowired
+    private AddressMapper addressMapper;
+    @Autowired
+    private CoordinatesMapper coordinatesMapper;
 
     @Override
     public DepotDto daoToDto(Depot depot) {
@@ -23,18 +29,19 @@ public class DepotMapperImpl implements DepotMapper {
             return null;
         }
 
+        AddressDto addressDto = null;
+        CoordinatesDto coordinatesDto = null;
         UUID id = null;
         Instant creation = null;
         Instant lastUpdate = null;
         String warehouseName = null;
 
+        addressDto = addressMapper.daoToDto( depot.getAddress() );
+        coordinatesDto = coordinatesMapper.daoToDto( depot.getCoordinates() );
         id = depot.getId();
         creation = depot.getCreation();
         lastUpdate = depot.getLastUpdate();
         warehouseName = depot.getWarehouseName();
-
-        AddressDto addressDto = null;
-        CoordinatesDto coordinatesDto = null;
 
         DepotDto depotDto = new DepotDto( id, creation, lastUpdate, warehouseName, addressDto, coordinatesDto );
 
@@ -49,6 +56,8 @@ public class DepotMapperImpl implements DepotMapper {
 
         Depot depot = new Depot();
 
+        depot.setAddress( addressMapper.dtoToDao( depotDto.addressDto() ) );
+        depot.setCoordinates( coordinatesMapper.dtoToDao( depotDto.coordinatesDto() ) );
         depot.setId( depotDto.id() );
         depot.setCreation( depotDto.creation() );
         depot.setLastUpdate( depotDto.lastUpdate() );
