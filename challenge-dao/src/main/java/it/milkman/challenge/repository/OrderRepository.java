@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,7 +15,20 @@ import java.util.UUID;
 public interface OrderRepository extends JpaRepository<Order, UUID> {
 
     @EntityGraph(attributePaths = {"depot", "supplier", "packages"})
-    @Query("SELECT o FROM Order o WHERE o.id = :orderId")
+    @Query("""
+            SELECT o
+            FROM Order o 
+            WHERE o.id = :orderId
+            """)
     Optional<Order> findByIdFull(@Param("orderId") UUID orderId);
+
+    @Query("""
+            SELECT o
+            FROM Order o
+            WHERE o.depot.id = :depotId
+            AND o.status = 'WAITING'
+            ORDER BY o.creation
+            """)
+    List<Order> findOrdersWaitingInDepot(@Param("depotId") UUID depotId);
 
 }

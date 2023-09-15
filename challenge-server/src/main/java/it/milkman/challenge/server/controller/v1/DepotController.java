@@ -3,14 +3,14 @@ package it.milkman.challenge.server.controller.v1;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import it.milkman.challenge.dto.depot.DepotDto;
+import it.milkman.challenge.dto.CoordinatesDto;
 import it.milkman.challenge.server.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,7 +28,7 @@ public class DepotController {
             @ApiResponse(responseCode = "202", description = "Planning accepted."),
             @ApiResponse(responseCode = "404", description = "Input depotId is not found.")
     })
-    public Set<DepotDto> planStart(@PathVariable UUID depotId) {
+    public List<CoordinatesDto> planStart(@PathVariable UUID depotId) {
         return orderService.startPlanningOrders(depotId);
     }
 
