@@ -10,11 +10,12 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>challenge-common</module>
         <module>challenge-dao</module>
         <module>challenge-dto</module>
         <module>challenge-mapper</module>
+        <module>challenge-route-calculator</module>
         <module>challenge-server</module>
-        <module>challenge-common</module>
     </modules>
 
     <properties>

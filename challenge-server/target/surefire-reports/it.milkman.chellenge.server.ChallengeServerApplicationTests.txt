@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: it.milkman.chellenge.server.ChallengeServerApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.545 s - in it.milkman.chellenge.server.ChallengeServerApplicationTests

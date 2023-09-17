@@ -26,9 +26,6 @@ public class Package extends BaseEntity {
     @Embedded
     private Coordinates coordinates;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Order order;
-
     @Column(length = Constants.StringSizingConstants.LARGE)
     private String notesForDelivery;
 

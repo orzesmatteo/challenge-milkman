@@ -3,11 +3,12 @@ package it.milkman.challenge.dao;
 import it.milkman.challenge.common.Constants;
 import it.milkman.challenge.dao.embeddables.Address;
 import it.milkman.challenge.dao.embeddables.Coordinates;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)

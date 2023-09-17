@@ -29,7 +29,7 @@ public class Order extends BaseEntity {
     @Column(length = Constants.StringSizingConstants.XLARGE)
     private String notes;
 
-    @OneToMany(targetEntity = Package.class, cascade = CascadeType.PERSIST, mappedBy = "order")
+    @OneToMany(targetEntity = Package.class)
     private Set<Package> packages;
 
     @Enumerated(EnumType.STRING)

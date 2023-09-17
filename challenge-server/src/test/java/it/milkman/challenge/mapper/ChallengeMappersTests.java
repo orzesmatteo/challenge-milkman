@@ -27,10 +27,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import static it.milkman.challenge.TestHelper.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = ChallengeApplication.class)
 @ActiveProfiles("h2")
-public class ChallengeMappersTests {
+class ChallengeMappersTests {
 
     @Autowired
     AddressMapper addressMapper;
@@ -56,8 +57,8 @@ public class ChallengeMappersTests {
         AddressDto addressDto = getAddressDtoForTests();
         AddressDto generatedDto = addressMapper.daoToDto(address);
         Address generatedDao = addressMapper.dtoToDao(addressDto);
-        assert (generatedDto.equals(addressDto));
-        assert (generatedDao.equals(address));
+        assertEquals(generatedDto, addressDto);
+        assertEquals(generatedDao, address);
     }
 
     @Test
@@ -66,8 +67,8 @@ public class ChallengeMappersTests {
         CoordinatesDto coordinatesDto = getCoordinatesDtoForTests();
         CoordinatesDto generatedDto = coordinatesMapper.daoToDto(coordinates);
         Coordinates generatedDao = coordinatesMapper.dtoToDao(coordinatesDto);
-        assert (generatedDto.equals(coordinatesDto));
-        assert (generatedDao.equals(coordinates));
+        assertEquals(generatedDto, coordinatesDto);
+        assertEquals(generatedDao, coordinates);
     }
 
     @Test
@@ -81,8 +82,8 @@ public class ChallengeMappersTests {
         DepotDto depotDto = new DepotDto(randomUUID, instant, instant, "name", getAddressDtoForTests(), getCoordinatesDtoForTests());
         DepotDto generatedDto = depotMapper.daoToDto(depot);
         Depot generatedDao = depotMapper.dtoToDao(depotDto);
-        assert (generatedDto.equals(depotDto));
-        assert (generatedDao.equals(depot));
+        assertEquals(generatedDto, depotDto);
+        assertEquals(generatedDao, depot);
     }
 
     @Test
@@ -97,7 +98,7 @@ public class ChallengeMappersTests {
         supplier.setId(randomUUID);
         supplier.setCreation(instant);
         supplier.setLastUpdate(instant);
-        Package packageDao = new Package(getAddressForTests(), getCoordinatesForTests(), null, "notes", PackageStatus.IN_DELIVERY, instant);
+        Package packageDao = new Package(getAddressForTests(), getCoordinatesForTests(), "notes", PackageStatus.IN_DELIVERY, instant);
         packageDao.setId(randomUUID);
         packageDao.setCreation(instant);
         packageDao.setLastUpdate(instant);
@@ -112,23 +113,23 @@ public class ChallengeMappersTests {
                 OrderStatusDto.IN_DELIVERY, instant, instant, instant);
         OrderDto generatedDto = orderMapper.daoToDto(order);
         Order generatedDao = orderMapper.dtoToDao(orderDto);
-        assert (generatedDto.equals(orderDto));
-        assert (generatedDao.equals(order));
+        assertEquals(generatedDto, orderDto);
+        assertEquals(generatedDao, order);
     }
 
     @Test
     void verifyPackageMapper() {
         UUID randomUUID = UUID.randomUUID();
         Instant instant = Instant.now();
-        Package packageDao = new Package(getAddressForTests(), getCoordinatesForTests(), null, "notes", PackageStatus.IN_DELIVERY, instant);
+        Package packageDao = new Package(getAddressForTests(), getCoordinatesForTests(), "notes", PackageStatus.IN_DELIVERY, instant);
         packageDao.setId(randomUUID);
         packageDao.setCreation(instant);
         packageDao.setLastUpdate(instant);
         PackageDto packageDto = new PackageDto(randomUUID, instant, instant, getAddressDtoForTests(), getCoordinatesDtoForTests(), "notes", PackageStatusDto.IN_DELIVERY, instant);
         PackageDto generatedDto = packageMapper.daoToDto(packageDao);
         Package generatedDao = packageMapper.dtoToDao(packageDto);
-        assert (generatedDto.equals(packageDto));
-        assert (generatedDao.equals(packageDao));
+        assertEquals(generatedDto, packageDto);
+        assertEquals(generatedDao, packageDao);
     }
 
     @Test
@@ -142,8 +143,8 @@ public class ChallengeMappersTests {
         SupplierDto supplierDto = new SupplierDto(randomUUID, instant, instant, "name");
         SupplierDto generatedDto = supplierMapper.daoToDto(supplier);
         Supplier generatedDao = supplierMapper.dtoToDao(supplierDto);
-        assert (generatedDto.equals(supplierDto));
-        assert (generatedDao.equals(supplier));
+        assertEquals(generatedDto, supplierDto);
+        assertEquals(generatedDao, supplier);
     }
 
 }

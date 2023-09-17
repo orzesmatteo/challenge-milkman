@@ -1,5 +1,6 @@
 package it.milkman.challenge;
 
+import it.milkman.challenge.dao.Depot;
 import it.milkman.challenge.dao.embeddables.Address;
 import it.milkman.challenge.dao.embeddables.Coordinates;
 import it.milkman.challenge.dto.AddressDto;
@@ -21,6 +22,14 @@ public final class TestHelper {
 
     public static CoordinatesDto getCoordinatesDtoForTests() {
         return new CoordinatesDto(43.911153, 12.647942);
+    }
+
+    public static Depot getFirstDepotForTests() {
+        return new Depot("warehouseName1", TestHelper.getAddressForTests(), TestHelper.getCoordinatesForTests());
+    }
+
+    public static Depot getSecondDepotForTests() {
+        return new Depot("warehouseName2", TestHelper.getAddressForTests(), TestHelper.getCoordinatesForTests());
     }
 
 }

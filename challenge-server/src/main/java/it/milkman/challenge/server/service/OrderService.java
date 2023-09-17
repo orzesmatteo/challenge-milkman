@@ -1,5 +1,6 @@
 package it.milkman.challenge.server.service;
 
+import it.milkman.challenge.dao.Depot;
 import it.milkman.challenge.dao.Order;
 import it.milkman.challenge.dao.Package;
 import it.milkman.challenge.dao.enums.OrderStatus;
@@ -14,8 +15,11 @@ import it.milkman.challenge.mapper.CoordinatesMapper;
 import it.milkman.challenge.mapper.OrderMapper;
 import it.milkman.challenge.repository.DepotRepository;
 import it.milkman.challenge.repository.OrderRepository;
+import it.milkman.challenge.repository.PackageRepository;
 import it.milkman.challenge.repository.SupplierRepository;
-import it.milkman.challenge.server.tools.RouteCalculator;
+import it.milkman.challenge.route.api.RouteCalculator;
+import it.milkman.challenge.server.exception.ResourceMismatchException;
+import it.milkman.challenge.server.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,18 +52,20 @@ public class OrderService {
 
     private final RouteCalculator routeCalculator;
 
+    private final PackageRepository packageRepository;
+
     @Transactional
     public UUID acceptOrder(CreateOrderDto createOrderDto) {
         Set<Package> packages = createOrderDto.packages().stream().map(createPackageDto ->
                 new it.milkman.challenge.dao.Package(
                         addressMapper.dtoToDao(createPackageDto.address()),
                         coordinatesMapper.dtoToDao(createPackageDto.coordinates()),
-                        null,
                         createPackageDto.notesForDelivery(),
                         PackageStatus.WAITING,
                         null
                 )
         ).collect(Collectors.toSet());
+        packages = new HashSet<>(packageRepository.saveAll(packages));
         Order order = new Order(
                 supplierRepository.getReferenceById(createOrderDto.supplierId()),
                 depotRepository.getReferenceById(createOrderDto.depotId()),
@@ -76,17 +79,36 @@ public class OrderService {
         return orderRepository.save(order).getId();
     }
 
-    public OrderDto editOrder(UUID orderId, EditOrderDto orderDto) {
-        return null;//TODO
+    @Transactional
+    public OrderDto editOrder(UUID orderId, EditOrderDto editOrderDto) {
+        if (!editOrderDto.orderId().equals(orderId)) {
+            throw new ResourceMismatchException("Mismatch between path and given orderId.", orderId, editOrderDto.orderId());
+        }
+        if (!depotRepository.existsById(editOrderDto.depotId())) {
+            throw new ResourceNotFoundException("Depot not found for given Id.");
+        }
+        if (!supplierRepository.existsById(editOrderDto.supplierId())) {
+            throw new ResourceNotFoundException("Supplier not found for given Id.");
+        }
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."));
+        if (order.getStatus() != OrderStatus.WAITING) {
+            throw new IllegalStateException("Cannot edit started orders."); //Caught by controller advice
+        }
+        order.setDepot(depotRepository.getReferenceById(editOrderDto.depotId()));
+        order.setSupplier(supplierRepository.getReferenceById(editOrderDto.supplierId()));
+        order.setNotes(editOrderDto.notes());
+        return orderMapper.daoToDto(orderRepository.save(order));
     }
 
     public Page<OrderDto> searchOrders(OrderStatusDto orderStatus, UUID depotId, Pageable pageable) {
-        return null;//TODO
+        return orderRepository.findByDepotAndStatus(depotId, OrderStatus.valueOf(orderStatus.name()), pageable).map(orderMapper::daoToDto);
     }
 
     @Transactional
     public List<CoordinatesDto> startPlanningOrders(UUID depotId) {
         logger.info("OrderService::startPlanningOrders");
+        //STEP0 Retrieve Depot info
+        Depot depot = depotRepository.findById(depotId).orElseThrow(() -> new ResourceNotFoundException("Depot not found for id: " + depotId));
         //STEP1 Set the Order as started.
         List<Order> waitingOrders = orderRepository.findOrdersWaitingInDepot(depotId);
         List<Package> waitingPackages = new ArrayList<>();
@@ -97,7 +119,12 @@ public class OrderService {
             order.setPlanStart(Instant.now());
         });
         //STEP2 Calculate order of delivery with external bean
+        List<CoordinatesDto> route = routeCalculator.calculateRoute(
+                coordinatesMapper.daoToDto(depot.getCoordinates()),
+                waitingPackages.stream().map(aPackage -> coordinatesMapper.daoToDto(aPackage.getCoordinates())).collect(Collectors.toSet()),
+                coordinatesMapper.daoToDto(depot.getCoordinates()));
+        logger.info("OrderService::startPlanningOrders calculated route: %s".formatted(route.toString()));
         //STEP3 Return order for courier
-        return null;//todo
+        return route;
     }
 }

@@ -4,11 +4,8 @@ import it.milkman.challenge.common.Constants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.OneToMany;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
