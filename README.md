@@ -53,3 +53,9 @@ By default, some entities are inserted on db creation for future usage:
 - Suppliers:
     - __Supplier-1__ `a4f7bdcc-16fd-4449-91a8-be5122c9a09a`
     - __Supplier-2__ `f35944b1-f082-458c-9571-e71a6a5f8738`
+
+### Further improvements
+- Introduce cache, using Redis if the application needs to scale.
+- Introduce metrics for auto-scaling.
+- Introduce a more robust authentication using oidc with Keycloak.
+- Introduce an audit layer tracing operation and user performing the task.
