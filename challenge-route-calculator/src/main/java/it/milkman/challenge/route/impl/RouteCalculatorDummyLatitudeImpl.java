@@ -14,6 +14,6 @@ import java.util.stream.Collectors;
 public class RouteCalculatorDummyLatitudeImpl implements RouteCalculator {
     @Override
     public List<CoordinatesDto> calculateRoute(CoordinatesDto start, Set<CoordinatesDto> deliveries, CoordinatesDto end) {
-        return deliveries.stream().sorted(Comparator.comparingDouble(CoordinatesDto::latitude)).collect(Collectors.toList());
+        return deliveries.stream().sorted(Comparator.comparingDouble(CoordinatesDto::latitude)).toList();
     }
 }

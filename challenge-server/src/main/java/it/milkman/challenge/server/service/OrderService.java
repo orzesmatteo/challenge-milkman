@@ -18,6 +18,7 @@ import it.milkman.challenge.repository.OrderRepository;
 import it.milkman.challenge.repository.PackageRepository;
 import it.milkman.challenge.repository.SupplierRepository;
 import it.milkman.challenge.route.api.RouteCalculator;
+import it.milkman.challenge.server.exception.OrderStatusBlockOperationException;
 import it.milkman.challenge.server.exception.ResourceMismatchException;
 import it.milkman.challenge.server.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -92,7 +93,7 @@ public class OrderService {
         }
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."));
         if (order.getStatus() != OrderStatus.WAITING) {
-            throw new IllegalStateException("Cannot edit started orders."); //Caught by controller advice
+            throw new OrderStatusBlockOperationException("Cannot edit started orders.");
         }
         order.setDepot(depotRepository.getReferenceById(editOrderDto.depotId()));
         order.setSupplier(supplierRepository.getReferenceById(editOrderDto.supplierId()));
@@ -101,6 +102,9 @@ public class OrderService {
     }
 
     public Page<OrderDto> searchOrders(OrderStatusDto orderStatus, UUID depotId, Pageable pageable) {
+        if (!depotRepository.existsById(depotId)) {
+            throw new ResourceNotFoundException("Depot not found for given Id.");
+        }
         return orderRepository.findByDepotAndStatus(depotId, OrderStatus.valueOf(orderStatus.name()), pageable).map(orderMapper::daoToDto);
     }
 

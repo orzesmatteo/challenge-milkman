@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.UUID;
 
-@ResponseStatus(HttpStatus.CONFLICT)
 @Getter
 public class ResourceMismatchException extends RuntimeException {
 

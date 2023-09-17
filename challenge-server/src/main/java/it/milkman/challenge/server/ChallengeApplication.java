@@ -14,9 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaAuditing
 public class ChallengeApplication {
 
-    public ChallengeApplication() {
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(ChallengeApplication.class, args);
     }

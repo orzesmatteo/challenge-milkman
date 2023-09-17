@@ -1,0 +1,5 @@
+it\milkman\challenge\route\impl\RouteCalculatorDummyLatitudeImpl.class
+it\milkman\challenge\route\property\RouteCalculatorProperties.class
+it\milkman\challenge\route\api\RouteCalculator.class
+it\milkman\challenge\route\property\RouteCalculatorImpl.class
+it\milkman\challenge\route\impl\RouteCalculatorDummyLongitudeImpl.class

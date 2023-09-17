@@ -2,7 +2,6 @@ package it.milkman.challenge.server.controller.v1;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import it.milkman.challenge.dto.order.CreateOrderDto;
 import it.milkman.challenge.dto.order.EditOrderDto;
 import it.milkman.challenge.dto.order.OrderDto;
@@ -32,31 +31,25 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Accept orders from external systems.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Order accepted."),
-            @ApiResponse(responseCode = "400", description = "Body is not correct.")
-    })
+    @ApiResponse(responseCode = "201", description = "Order accepted.")
+    @ApiResponse(responseCode = "400", description = "Body is not correct.")
     public UUID acceptOrder(@RequestBody CreateOrderDto createOrderDto) {
         return orderService.acceptOrder(createOrderDto);
     }
 
     @PutMapping("/{orderId}")
     @Operation(summary = "Allows order modification from external systems.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Order edit accepted."),
-            @ApiResponse(responseCode = "400", description = "Body is not correct."),
-            @ApiResponse(responseCode = "409", description = "Identifier does not match.")
-    })
+    @ApiResponse(responseCode = "200", description = "Order edit accepted.")
+    @ApiResponse(responseCode = "400", description = "Body is not correct.")
+    @ApiResponse(responseCode = "409", description = "Identifier does not match.")
     public @Valid OrderDto editOrder(@PathVariable UUID orderId, @Valid @RequestBody EditOrderDto editOrderDto) {
         return orderService.editOrder(orderId, editOrderDto);
     }
 
     @GetMapping
     @Operation(summary = "Search orders with pagination based on optional filter params.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Search successful."),
-            @ApiResponse(responseCode = "404", description = "Input depotId is not found.")
-    })
+    @ApiResponse(responseCode = "200", description = "Search successful.")
+    @ApiResponse(responseCode = "404", description = "Input depotId is not found.")
     public Page<@Valid OrderDto> searchOrders(
             @RequestParam(required = false) OrderStatusDto orderStatus,
             @RequestParam(required = false) UUID depotId,

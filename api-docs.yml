@@ -1,0 +1,444 @@
+openapi: 3.0.1
+info:
+  title: challenge-api
+  version: '1'
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+security:
+  - basicAuth: []
+paths:
+  /v1/orders/{orderId}:
+    put:
+      tags:
+        - order-controller
+      summary: Allows order modification from external systems.
+      operationId: editOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditOrderDto'
+        required: true
+      responses:
+        '200':
+          description: Order edit accepted.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrderDto'
+        '400':
+          description: Body is not correct.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrderDto'
+        '409':
+          description: Identifier does not match.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrderDto'
+  /v1/orders:
+    get:
+      tags:
+        - order-controller
+      summary: Search orders with pagination based on optional filter params.
+      operationId: searchOrders
+      parameters:
+        - name: orderStatus
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - WAITING
+              - STARTED
+              - IN_DELIVERY
+              - DELIVERED
+        - name: depotId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        '200':
+          description: Search successful.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageOrderDto'
+        '404':
+          description: Input depotId is not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageOrderDto'
+    post:
+      tags:
+        - order-controller
+      summary: Accept orders from external systems.
+      operationId: acceptOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderDto'
+        required: true
+      responses:
+        '201':
+          description: Order accepted.
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: uuid
+        '400':
+          description: Body is not correct.
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: uuid
+  /v1/depots/{depotId}/_startOrdersPlan:
+    post:
+      tags:
+        - depot-controller
+      summary: Initiate planning computation from the specified depot to all the orders placed up to that point.
+      operationId: planStart
+      parameters:
+        - name: depotId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '202':
+          description: Planning accepted.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CoordinatesDto'
+        '404':
+          description: Input depotId is not found.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CoordinatesDto'
+components:
+  schemas:
+    EditOrderDto:
+      required:
+        - depotId
+        - orderId
+        - supplierId
+      type: object
+      properties:
+        orderId:
+          type: string
+          format: uuid
+        depotId:
+          type: string
+          format: uuid
+        supplierId:
+          type: string
+          format: uuid
+        notes:
+          type: string
+    AddressDto:
+      required:
+        - cap
+        - city
+        - civic
+        - province
+        - street
+      type: object
+      properties:
+        street:
+          maxLength: 32
+          minLength: 0
+          type: string
+        civic:
+          maxLength: 8
+          minLength: 0
+          type: string
+        cap:
+          maxLength: 8
+          minLength: 0
+          type: string
+        city:
+          maxLength: 32
+          minLength: 0
+          type: string
+        province:
+          maxLength: 32
+          minLength: 0
+          type: string
+    CoordinatesDto:
+      required:
+        - latitude
+        - longitude
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+    DepotDto:
+      required:
+        - addressDto
+        - coordinatesDto
+        - creation
+        - id
+        - lastUpdate
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        creation:
+          type: string
+          format: date-time
+        lastUpdate:
+          type: string
+          format: date-time
+        warehouseName:
+          maxLength: 16
+          minLength: 0
+          type: string
+        addressDto:
+          $ref: '#/components/schemas/AddressDto'
+        coordinatesDto:
+          $ref: '#/components/schemas/CoordinatesDto'
+    OrderDto:
+      required:
+        - creation
+        - depot
+        - id
+        - lastUpdate
+        - packages
+        - status
+        - supplier
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        creation:
+          type: string
+          format: date-time
+        lastUpdate:
+          type: string
+          format: date-time
+        supplier:
+          $ref: '#/components/schemas/SupplierDto'
+        depot:
+          $ref: '#/components/schemas/DepotDto'
+        notes:
+          type: string
+        packages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageDto'
+        status:
+          type: string
+          enum:
+            - WAITING
+            - STARTED
+            - IN_DELIVERY
+            - DELIVERED
+        planStart:
+          type: string
+          format: date-time
+        deliveryStart:
+          type: string
+          format: date-time
+        deliveryEnd:
+          type: string
+          format: date-time
+    PackageDto:
+      required:
+        - address
+        - coordinates
+        - creation
+        - id
+        - lastUpdate
+        - status
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        creation:
+          type: string
+          format: date-time
+        lastUpdate:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/AddressDto'
+        coordinates:
+          $ref: '#/components/schemas/CoordinatesDto'
+        notesForDelivery:
+          type: string
+        status:
+          type: string
+          enum:
+            - WAITING
+            - IN_DELIVERY
+            - DELIVERED
+            - LOST
+            - REJECTED
+        deliveryDate:
+          type: string
+          format: date-time
+    SupplierDto:
+      required:
+        - creation
+        - id
+        - lastUpdate
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        creation:
+          type: string
+          format: date-time
+        lastUpdate:
+          type: string
+          format: date-time
+        name:
+          type: string
+    CreateOrderDto:
+      required:
+        - depotId
+        - packages
+        - supplierId
+      type: object
+      properties:
+        depotId:
+          type: string
+          format: uuid
+        supplierId:
+          type: string
+          format: uuid
+        packages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatePackageDto'
+        notes:
+          type: string
+    CreatePackageDto:
+      required:
+        - address
+        - coordinates
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressDto'
+        coordinates:
+          $ref: '#/components/schemas/CoordinatesDto'
+        notesForDelivery:
+          type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    PageOrderDto:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDto'
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: '#/components/schemas/SortObject'
+    SortObject:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+        empty:
+          type: boolean
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

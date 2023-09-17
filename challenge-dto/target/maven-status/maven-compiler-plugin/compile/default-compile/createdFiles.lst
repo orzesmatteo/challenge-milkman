@@ -1,0 +1,11 @@
+it\milkman\challenge\dto\depot\DepotDto.class
+it\milkman\challenge\dto\CoordinatesDto.class
+it\milkman\challenge\dto\packages\PackageDto.class
+it\milkman\challenge\dto\order\OrderDto.class
+it\milkman\challenge\dto\order\CreateOrderDto.class
+it\milkman\challenge\dto\order\EditOrderDto.class
+it\milkman\challenge\dto\packages\CreatePackageDto.class
+it\milkman\challenge\dto\packages\PackageStatusDto.class
+it\milkman\challenge\dto\supplier\SupplierDto.class
+it\milkman\challenge\dto\AddressDto.class
+it\milkman\challenge\dto\order\OrderStatusDto.class
