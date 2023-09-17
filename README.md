@@ -34,10 +34,20 @@ In order to build another version use the following command from root challenge 
 
 ### Infos
 
-When application server is running description OpenApi is downloadable from http://localhost:8080/v3/api-docs, the same description is inside `api-docs.yml` file found in root directory. 
+When application server is running description OpenApi is downloadable from http://localhost:8080/v3/api-docs, the same
+description is inside `api-docs.yml` file found in root directory.
 
 Default basic auth credentials are:
 
 username: __challenge__
 
 password: __challenge__
+
+By default, some entities are inserted on db creation for future usage:
+
+- Depots:
+    - __Morciano-Depot__ `e45dc9fd-72e1-45dc-881a-a3c53fa07b21`
+    - __Riccione-Depot__ `bae47020-edcd-4daa-9405-38b062367b94`
+- Suppliers:
+    - __Supplier-1__ `a4f7bdcc-16fd-4449-91a8-be5122c9a09a`
+    - __Supplier-2__ `f35944b1-f082-458c-9571-e71a6a5f8738`

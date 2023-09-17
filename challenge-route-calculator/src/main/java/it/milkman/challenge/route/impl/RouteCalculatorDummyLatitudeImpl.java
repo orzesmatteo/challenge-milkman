@@ -6,7 +6,6 @@ import it.milkman.challenge.route.api.RouteCalculator;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Dummy implementation of route calculator sorting by latitude

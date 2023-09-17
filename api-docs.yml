@@ -6,7 +6,7 @@ servers:
   - url: http://localhost:8080
     description: Generated server url
 security:
-  - basicAuth: []
+  - basicAuth: [ ]
 paths:
   /v1/orders/{orderId}:
     put:
