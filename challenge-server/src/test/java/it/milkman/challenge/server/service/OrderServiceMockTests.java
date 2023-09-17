@@ -19,18 +19,21 @@ import it.milkman.challenge.repository.PackageRepository;
 import it.milkman.challenge.repository.SupplierRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceMockTests {
@@ -51,6 +54,8 @@ class OrderServiceMockTests {
     private AddressMapper addressMapper;
     @Mock
     private CoordinatesMapper coordinatesMapper;
+    @Captor
+    ArgumentCaptor<Order> orderCaptor;
     @InjectMocks
     private OrderService orderService;
 
@@ -59,23 +64,35 @@ class OrderServiceMockTests {
 
         // GIVEN
         UUID depotId = UUID.randomUUID();
+        Instant depotCreation = Instant.now();
         Depot firstDepot = TestHelper.getFirstDepotForTests();
         firstDepot.setId(depotId);
+        firstDepot.setCreation(depotCreation);
+        firstDepot.setLastUpdate(depotCreation);
         given(depotRep.getReferenceById(depotId)).willReturn(firstDepot);
 
         UUID supplierId = UUID.randomUUID();
+        Instant supplierCreation = Instant.now();
         Supplier firstSupplier = new Supplier("Supplier1");
         firstSupplier.setId(supplierId);
+        firstSupplier.setCreation(supplierCreation);
+        firstSupplier.setLastUpdate(supplierCreation);
         given(supplierRep.getReferenceById(supplierId)).willReturn(firstSupplier);
 
         UUID packageId = UUID.randomUUID();
+        Instant packageCreation = Instant.now();
         Package packageForOrder = new Package(TestHelper.getAddressForTests(), TestHelper.getCoordinatesForTests(), "Notes for delivery", PackageStatus.WAITING, null);
         packageForOrder.setId(packageId);
+        packageForOrder.setCreation(packageCreation);
+        packageForOrder.setLastUpdate(packageCreation);
         given(packageRep.saveAll(any())).willReturn(new ArrayList<>(Set.of(packageForOrder)));
 
         UUID orderId = UUID.randomUUID();
+        Instant orderCreation = Instant.now();
         Order order = new Order(firstSupplier, firstDepot, "notes", Set.of(packageForOrder), OrderStatus.WAITING, null, null, null);
         order.setId(orderId);
+        order.setCreation(orderCreation);
+        order.setLastUpdate(orderCreation);
         given(orderRep.save(any(Order.class))).willReturn(order);
 
         // WHEN
@@ -84,7 +101,12 @@ class OrderServiceMockTests {
         UUID createdOrderId = orderService.acceptOrder(createOrderDto);
 
         // THEN
+        then(orderRep).should().save(orderCaptor.capture());
+        Order orderSaved = orderCaptor.getValue();
         assertThat(createdOrderId).isEqualTo(orderId);
+        assertThat(orderSaved.getDepot()).isEqualTo(order.getDepot());
+        assertThat(orderSaved.getSupplier()).isEqualTo(order.getSupplier());
+        assertThat(orderSaved.getPackages()).isEqualTo(order.getPackages());
         //Improve with other assertions
     }
 
