@@ -43,6 +43,8 @@ username: __challenge__
 
 password: __challenge__
 
+Routing dummy implementation can be modified from latitude to longitude using property `it.milkman.route.calculator.impl=LATITUDE` `it.milkman.route.calculator.impl=LONGITUDE`
+
 By default, some entities are inserted on db creation for future usage:
 
 - Depots:
